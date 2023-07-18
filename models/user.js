@@ -1,4 +1,5 @@
 'use strict';
+const { hashSync } = require('bcrypt');
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -33,9 +34,17 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true,
         },
       },
+      // {passwordHash: qwerty}
+      // при выполнении методов User.create(), User.update()
+      //   автоматом будет віполнен сеттер
+      // Т.е. в бузу пойдет уже преобразованное значение
+      //   {passwordHash: 5d4f5sd-sdf4sd5f-231fsd}
       passwordHash: {
         type: DataTypes.STRING,
         allowNull: false,
+        set(value) {
+          this.setDataValue('passwordHash', hashSync(value, 10));
+        },
       },
       birthday: {
         type: DataTypes.STRING,

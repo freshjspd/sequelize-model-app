@@ -3,8 +3,17 @@ PATCH http://localhost:5000/api/users/1
 Content-Type: application/json
 
 {
-  "email": "newmail2@mail.com"
+  "email": "newmail3@mail.com"
 }
+
+# Check existing user with password - 200, user
+PATCH http://localhost:5000/api/users/1
+Content-Type: application/json
+
+{
+  "passwordHash": "qwerty10"
+}
+
 
 # Check nonexisting user - 404, User Not Found
 PATCH http://localhost:5000/api/users/1000
