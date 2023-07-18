@@ -1,0 +1,23 @@
+# Check existing user - 200, user
+PATCH http://localhost:5000/api/users/1
+Content-Type: application/json
+
+{
+  "email": "newmail2@mail.com"
+}
+
+# Check nonexisting user - 404, User Not Found
+PATCH http://localhost:5000/api/users/1000
+Content-Type: application/json
+
+{
+  "email": "newmail@mail.com"
+}
+
+# Check existing user with uncorrect info - 500 Server Error
+PATCH http://localhost:5000/api/users/1
+Content-Type: application/json
+
+{
+  "email": "newmail"
+}

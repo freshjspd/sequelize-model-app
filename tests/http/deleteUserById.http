@@ -1,0 +1,5 @@
+# Check existing user - 204
+DELETE http://localhost:5000/api/users/5
+
+# Check unexisting user - 404 User Not Found
+DELETE http://localhost:5000/api/users/1000
