@@ -10,9 +10,3 @@ module.exports.getUserById = async (req, res) => {
 module.exports.updateUserById = async (req, res) => {};
 
 module.exports.deleteUserById = async (req, res) => {};
-
-// {
-//   createUser: ()=>{}
-//   getUsers: ()=>{}
-//   ...
-// }
