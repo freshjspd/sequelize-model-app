@@ -27,10 +27,16 @@ module.exports.createUser = async (req, res) => {
 };
 
 module.exports.getUsers = async (req, res) => {
+  const { pagination } = req;
+
   try {
     const foundUsers = await User.findAll({
       raw: true,
       attributes: { exclude: ['passwordHash', 'createdAt', 'updatedAt'] },
+      order: ['id'],
+      // limit: pagination.limit,
+      // offset: pagination.offset,
+      ...pagination,
     });
 
     res.status(200).send(foundUsers);
