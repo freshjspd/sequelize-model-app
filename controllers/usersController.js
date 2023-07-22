@@ -22,6 +22,7 @@ module.exports.createUser = async (req, res) => {
 
     res.status(201).send(preparedUser);
   } catch (err) {
+    console.log(' controller err :>> ', err);
     res.status(500).send('Server Error');
   }
 };
