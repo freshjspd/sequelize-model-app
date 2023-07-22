@@ -92,7 +92,6 @@ module.exports.updateUserById = async (req, res) => {
 
     res.status(200).send(preparedUser);
   } catch (err) {
-    console.log('err :>> ', err);
     res.status(500).send('Server Error');
   }
 };
