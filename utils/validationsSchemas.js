@@ -21,6 +21,6 @@ module.exports.USER_VALIDATION_SCHEMA = yup.object({
     .max(64)
     .matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/)
     .required(),
-  // birthday: yup.date().max(new Date().toISOString()),
+  birthday: yup.date().max(new Date()),
   gender: yup.mixed().oneOf(['male', 'female', 'other']),
 });

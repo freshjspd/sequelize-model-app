@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       birthday: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         validate: {
           isDate: true,
           isBefore: new Date().toISOString(),
