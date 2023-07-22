@@ -6,13 +6,13 @@ const usersRouter = Router();
 
 usersRouter
   .route('/')
-  .post(validate.validateUser, usersController.createUser)
+  .post(validate.validateUserOnCreate, usersController.createUser)
   .get(paginate.paginateUser, usersController.getUsers);
 
 usersRouter
   .route('/:userId')
   .get(usersController.getUserById)
-  .patch(usersController.updateUserById)
+  .patch(validate.validateUserOnUpdate, usersController.updateUserById)
   .delete(usersController.deleteUserById);
 
 module.exports = usersRouter;
