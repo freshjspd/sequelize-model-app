@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { User } = require('./../models');
+const { User } = require('./../db/models');
 
 module.exports.createUser = async (req, res) => {
   const { body } = req;
