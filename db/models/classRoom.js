@@ -3,6 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class ClassRoom extends Model {
     static associate(models) {
+      // + magic methods (lazy loading)
       ClassRoom.hasMany(models.Topic, {
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE',
@@ -11,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       });
+      // classRoom1.getTopics();
+      // classRoom1.countTopics()
+      // ...
     }
   }
   ClassRoom.init(
