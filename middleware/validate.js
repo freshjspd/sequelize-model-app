@@ -1,3 +1,4 @@
+const createHttpError = require('http-errors');
 const {
   NEW_USER_VALIDATION_SCHEMA,
   UPDATED_USER_VALIDATION_SCHEMA,
@@ -9,7 +10,8 @@ module.exports.validateUserOnCreate = async (req, res, next) => {
     req.body = validatedUser;
     next();
   } catch (err) {
-    res.status(422).send({ error: err.errors[0] });
+    // res.status(422).send({ error: err.errors[0] });
+    next(createHttpError(422, err.errors[0]));
   }
 };
 
@@ -21,6 +23,7 @@ module.exports.validateUserOnUpdate = async (req, res, next) => {
     req.body = validatedUser;
     next();
   } catch (err) {
-    res.status(422).send({ error: err.errors[0] });
+    // res.status(422).send({ error: err.errors[0] });
+    next(createHttpError(422, err.errors[0]));
   }
 };

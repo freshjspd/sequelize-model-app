@@ -1,7 +1,8 @@
 const _ = require('lodash');
+const createHttpError = require('http-errors');
 const { User } = require('./../db/models');
 
-module.exports.createUser = async (req, res) => {
+module.exports.createUser = async (req, res, next) => {
   const { body } = req;
 
   // захешировать пароль
@@ -11,7 +12,8 @@ module.exports.createUser = async (req, res) => {
     const createdUser = await User.create(body);
 
     if (!createdUser) {
-      return res.status(500).send('Server Error');
+      // return res.status(500).send('Server Error');
+      return next(createHttpError(500, 'Server Error'));
     }
 
     const preparedUser = _.omit(createdUser.get(), [
@@ -22,12 +24,12 @@ module.exports.createUser = async (req, res) => {
 
     res.status(201).send(preparedUser);
   } catch (err) {
-    console.log(' controller err :>> ', err);
-    res.status(500).send('Server Error');
+    // res.status(500).send('Server Error');
+    next(err);
   }
 };
 
-module.exports.getUsers = async (req, res) => {
+module.exports.getUsers = async (req, res, next) => {
   const { pagination } = req;
 
   try {
@@ -42,11 +44,12 @@ module.exports.getUsers = async (req, res) => {
 
     res.status(200).send(foundUsers);
   } catch (err) {
-    res.status(500).send('Server Error');
+    // res.status(500).send('Server Error');
+    next(err);
   }
 };
 
-module.exports.getUserById = async (req, res) => {
+module.exports.getUserById = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -56,16 +59,18 @@ module.exports.getUserById = async (req, res) => {
     });
 
     if (!foundUser) {
-      return res.status(404).send('User Not Found');
+      // return res.status(404).send('User Not Found');
+      return next(createHttpError(404, 'User Not Found'));
     }
 
     res.status(200).send(foundUser);
   } catch (err) {
-    res.status(500).send('Server Error');
+    // res.status(500).send('Server Error');
+    next(err);
   }
 };
 
-module.exports.updateUserById = async (req, res) => {
+module.exports.updateUserById = async (req, res, next) => {
   const {
     body,
     params: { userId },
@@ -82,7 +87,8 @@ module.exports.updateUserById = async (req, res) => {
     });
 
     if (!updatedUser) {
-      return res.status(404).send('User Not Found');
+      // return res.status(404).send('User Not Found');
+      return next(createHttpError(404, 'User Not Found'));
     }
 
     const preparedUser = _.omit(updatedUser, [
@@ -93,11 +99,12 @@ module.exports.updateUserById = async (req, res) => {
 
     res.status(200).send(preparedUser);
   } catch (err) {
-    res.status(500).send('Server Error');
+    // res.status(500).send('Server Error');
+    next(err);
   }
 };
 
-module.exports.deleteUserById = async (req, res) => {
+module.exports.deleteUserById = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -106,11 +113,13 @@ module.exports.deleteUserById = async (req, res) => {
     });
 
     if (!deletedUserCount) {
-      return res.status(404).send('User Not Found');
+      // return res.status(404).send('User Not Found');
+      return next(createHttpError(404, 'User Not Found'));
     }
 
     res.status(204).end();
   } catch (err) {
-    res.status(500).send('Server Errod');
+    // res.status(500).send('Server Errod');
+    next(err);
   }
 };
