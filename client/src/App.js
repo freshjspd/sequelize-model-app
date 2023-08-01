@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+// 1 обратиться к серверу
+// 2 отобрfзить пришедшие с сервера данніе
+
+// GET http://localhost:5000/api/users
+const httpClient = axios.create({ baseURL: 'http://localhost:5000/api' });
 
 function App() {
+  const [users, setUsers] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // GET request
+    setIsFetching(true);
+    httpClient
+      .get('/users')
+      .then(({ data }) => {
+        setUsers(data);
+      })
+      .catch(err => {
+        setError(err);
+      })
+      .finally(() => setIsFetching(false));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {error && <div>ERROR!!!</div>}
+      {isFetching && <div>Loading, please wait...</div>}
+      {!error && !isFetching && (
+        <ul>
+          {users.map(u => (
+            <li key={u.id}>{JSON.stringify(u)}</li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 }
 
