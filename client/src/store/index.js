@@ -13,6 +13,6 @@ export default store;
 //   usersData: {
 //     users: [],
 //     isFetching: false,
-//     error: nell,
+//     error: null,
 //   },
 // };

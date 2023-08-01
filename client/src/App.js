@@ -1,28 +1,10 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-// 1 обратиться к серверу
-// 2 отобрfзить пришедшие с сервера данніе
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getUsersThunk } from './store/slices/usersSlice';
 
-// GET http://localhost:5000/api/users
-const httpClient = axios.create({ baseURL: 'http://localhost:5000/api' });
-
-function App() {
-  // const [users, setUsers] = useState([]);
-  // const [isFetching, setIsFetching] = useState(false);
-  // const [error, setError] = useState(null);
-
+function App({ users, isFetching, error, getUsers }) {
   useEffect(() => {
-    // GET request
-    setIsFetching(true);
-    httpClient
-      .get('/users')
-      .then(({ data }) => {
-        setUsers(data);
-      })
-      .catch(err => {
-        setError(err);
-      })
-      .finally(() => setIsFetching(false));
+    getUsers();
   }, []);
 
   return (
@@ -40,4 +22,11 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => state.usersData; // usersData => props
+
+const mapDispatchToProps = dispatch => ({
+  getUsers: () => {
+    dispatch(getUsersThunk());
+  },
+}); // {getUsers} => props
+export default connect(mapStateToProps, mapDispatchToProps)(App);
