@@ -7,9 +7,9 @@ import axios from 'axios';
 const httpClient = axios.create({ baseURL: 'http://localhost:5000/api' });
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState(null);
+  // const [users, setUsers] = useState([]);
+  // const [isFetching, setIsFetching] = useState(false);
+  // const [error, setError] = useState(null);
 
   useEffect(() => {
     // GET request
