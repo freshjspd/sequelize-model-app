@@ -16,6 +16,19 @@ export const getUsersThunk = createAsyncThunk(
   }
 );
 
+export const deleteUserThunk = createAsyncThunk(
+  'users/delete',
+  async (payload, { rejectWithValue }) => {
+    try {
+      await httpClient.delete(`/users/${payload}`);
+      return payload;
+    } catch (err) {
+      console.log('err :>> ', err);
+      return rejectWithValue({ message: err.message });
+    }
+  }
+);
+
 const initialState = {
   users: [],
   isFetching: false,
@@ -36,6 +49,20 @@ const usersSlice = createSlice({
       state.users = payload;
     });
     builder.addCase(getUsersThunk.rejected, (state, { payload }) => {
+      state.error = payload;
+      state.isFetching = false;
+    });
+    // DELETE
+    builder.addCase(deleteUserThunk.pending, state => {
+      state.isFetching = true;
+      state.error = null;
+    });
+    builder.addCase(deleteUserThunk.fulfilled, (state, { payload }) => {
+      const deletedUserIndex = state.users.findIndex(u => u.id === payload);
+      state.users.splice(deletedUserIndex, 1);
+      state.isFetching = false;
+    });
+    builder.addCase(deleteUserThunk.rejected, (state, { payload }) => {
       state.error = payload;
       state.isFetching = false;
     });

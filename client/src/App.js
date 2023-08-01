@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getUsersThunk } from './store/slices/usersSlice';
+import { deleteUserThunk, getUsersThunk } from './store/slices/usersSlice';
 
-function App({ users, isFetching, error, getUsers }) {
+// DELETE /api/users/id
+
+function App({ users, isFetching, error, getUsers, deleteUser }) {
   useEffect(() => {
     getUsers();
   }, []);
@@ -14,7 +16,15 @@ function App({ users, isFetching, error, getUsers }) {
       {!error && !isFetching && (
         <ul>
           {users.map(u => (
-            <li key={u.id}>{JSON.stringify(u)}</li>
+            <li key={u.id}>
+              {JSON.stringify(u)}
+              <button
+                onClick={() => {
+                  deleteUser(u.id);
+                }}>
+                Delete
+              </button>
+            </li>
           ))}
         </ul>
       )}
@@ -25,8 +35,7 @@ function App({ users, isFetching, error, getUsers }) {
 const mapStateToProps = state => state.usersData; // usersData => props
 
 const mapDispatchToProps = dispatch => ({
-  getUsers: () => {
-    dispatch(getUsersThunk());
-  },
-}); // {getUsers} => props
+  getUsers: () => dispatch(getUsersThunk()),
+  deleteUser: userId => dispatch(deleteUserThunk(userId)), // => payload
+}); // {getUsers, deleteUser} => props
 export default connect(mapStateToProps, mapDispatchToProps)(App);
